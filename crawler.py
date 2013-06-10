@@ -15,16 +15,15 @@ def getLinks(website):
         if 'specific' in l['href']:
             linklist.append(l)
         """
-        for item in l['href']:
-          linklist.append(item)
+        linklist.append(l['href'])
 
 getLinks(website)
 for item in linklist:
-    print item
-    if "href" in item:
+    #print item
+    #Clean up the results to only external webpages
+    if '.' in item:
+        hierarchy.append(str(item))
         print item
-
-print getLinks
-
-#for testing
+print hierarchy
+#For testing
 links = BeautifulSoup(urllib2.urlopen(website))
