@@ -3,6 +3,7 @@ import re
 import urllib2
 
 website = input('Enter full website domain as quoted string: ')
+uniqueURLS = []
 
 #Return list of clean string urls from given clean string website url
 def getLinks(website):
@@ -19,8 +20,9 @@ def getLinks(website):
     #Clean up the results 
     for item in linklist:
         #Clean up the results to only external webpages
-        if '.' in str(item):
+        if '.' in str(item) and item not in uniqueURLS:
             hierarchy.append(str(item))
+            uniqueURLS.append(str(item))
     print hierarchy
     return hierarchy
 
@@ -32,7 +34,7 @@ def getLinksOfLinks(webList):
         elif type(webList[sub1]) == str:
             print "Hit a url"
             if website in webList[sub1]:
-                if website == webList[sub1]:
+                if website == webList[sub1] or website in uniqueURLS:
                     continue
                 print "In an intenal link. Following... " + webList[sub1]
                 webList[sub1] = [webList[sub1]]
@@ -61,7 +63,16 @@ def prettyprint(siteMap, order = 0):
             print "-" * (level + 1) + "> " + siteMap[i]
         elif type(siteMap[i]) == list:
             prettyprint(siteMap[i], level + 1 )
-            
+
+#A slow implemtation that makes a list unique by removing dupliate elements            
+def makeUnique(siteList):
+    for i in range(len(siteList)):
+        if type(siteList[i]) == str:
+            if siteList[i] in uniqueURLS:
+                siteList.pop[i]
+            else:
+                uniqueURLS.append(siteList[i])
+
 
 #Process
 print getLinksOfLinks(getLinks(website))
